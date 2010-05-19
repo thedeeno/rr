@@ -11,6 +11,19 @@ describe "spy" do
     RR.reset
   end
 
+  it "should raise error when method isn't invoked" do
+    subject = Object.new
+
+    def subject.something
+    end
+
+    spy(subject)
+
+    lambda do
+      received(subject).something.call
+    end.should raise_error(RR::Errors::SpyVerificationErrors::SpyVerificationError) 
+  end
+
   it "should record all method invocations" do
     subject = Object.new
 
